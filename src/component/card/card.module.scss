@@ -1,0 +1,90 @@
+@mixin fonts($size:12px,$weight:400) {
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: 24px;
+  letter-spacing: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.wrapper {
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 10px 14px 0 #00000012;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: auto;
+  max-width: 305px;
+  width: 100%;
+}
+
+.product_image_block {
+
+  .product_image {
+    border-radius: 10px 10px 0 0;
+    height: auto;
+    width: 100%;
+  }
+
+  .upper_text_section {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+
+    &__text {
+      @include fonts();
+      color: #F3F3F3;
+    }
+
+    &__creator_name {
+      @include fonts(14px, 700);
+    }
+  }
+
+  .low_text_section {
+    position: absolute;
+    bottom: 104px;
+    left: 16px;
+
+    &__header {
+      @include fonts(18px);
+    }
+  }
+}
+
+
+.info_tag {
+  display: flex;
+  padding: 10px 16px 16px;
+  justify-content: space-between;
+
+  &__available_info {
+
+  }
+
+  &__text {
+    @include fonts();
+    color: gray;
+  }
+
+  &__text_price {
+    @extend .info_tag__text;
+    text-align: right;
+  }
+
+  &__quality {
+    @include fonts(16px, 600);
+    color: black;
+  }
+
+  &__price_info {
+
+  }
+
+  &__price {
+    @include fonts(16px);
+    color: #0040E5;
+  }
+}
