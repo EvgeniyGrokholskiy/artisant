@@ -3,10 +3,11 @@ import axios from 'axios';
 import style from './app.module.scss';
 import Card from "./component/card/card";
 import Header from "./component/header/header";
+import {IProduct} from "./types/types";
 
 function App() {
 
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<IProduct|[]>([])
 
     const handleGet = () => {
         axios.get("https://artisant.io/api/products")
