@@ -2,18 +2,35 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import style from './app.module.scss';
 import Header from "./component/header/header";
-import {IProducts} from "./types/types";
+import {IProduct} from "./types/types";
 import CardContainer from "./component/cardContainer/cardContainer";
+import {connect} from "react-redux";
+import {IStore} from './redux/store';
+import {
+    setActivePage,
+    setActivePageActionCreator,
+    setCardOnPage,
+    setCardOnPageActionCreator,
+    setProductActionCreator,
+    setProducts
+} from "./redux/appReducer";
 
-function App() {
+interface IAppProps {
+    products: Array<IProduct>
+    setProducts: setProductActionCreator
+    setActivePage: setActivePageActionCreator
+    setCardOnPage: setCardOnPageActionCreator
+}
 
-    const [products, setProducts] = useState<IProducts>()
+const App: React.FC<IAppProps> = ({products, setProducts, setCardOnPage, setActivePage}: IAppProps) => {
+
+    /*const [products, setProducts] = useState<IProducts>()*/
     const [windowWidth, setWindowWidth] = useState(1)
 
     const handleGet = async () => {
         await axios.get("https://artisant.io/api/products")
             .then((response) => {
-                setProducts(response.data.data)
+                setProducts(response.data.data.products)
             })
     }
 
@@ -42,4 +59,14 @@ function App() {
     );
 }
 
-export default App;
+const mapStateTuProps = (state: IStore) => ({
+    products: state.app.products
+})
+
+const mapDispatchToProps = {
+    setProducts,
+    setActivePage,
+    setCardOnPage
+}
+
+export default connect(mapStateTuProps, mapDispatchToProps)(App);

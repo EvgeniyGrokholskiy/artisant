@@ -4,24 +4,24 @@ const SET_PRODUCTS = "SRC/REDUX/APP_REDUCER/SET_PRODUCTS"
 const SET_ACTIVE_PAGE = "SRC/REDUX/APP_REDUCER/SET_ACTIVE_PAGE"
 const SET_CARD_ON_PAGE = "SRC/REDUX/APP_REDUCER/SET_CARD_ON_PAGE"
 
-interface setProductAction {
+interface ISetProductAction {
     type: typeof SET_PRODUCTS
     products: IProducts
 }
 
-interface setActivePage {
+interface ISetActivePage {
     type: typeof SET_ACTIVE_PAGE
     pageNumber: number
 }
 
-interface setCardOnPage {
+interface ISetCardOnPage {
     type: typeof SET_CARD_ON_PAGE
     cardOnPage: number
 }
 
-type actionType = setProductAction | setActivePage | setCardOnPage
+type actionType = ISetProductAction | ISetActivePage | ISetCardOnPage
 
-interface IInitialState {
+export interface IInitialState {
     products: [] | IProducts
     activePage: number
     cardOnPage: number
@@ -57,3 +57,23 @@ export const appReducer: appReducerType = (state: IInitialState = initialState, 
         }
     }
 }
+export type setProductActionCreator = (products: IProducts) => ISetProductAction
+
+export const setProducts: setProductActionCreator = products => ({
+    type: SET_PRODUCTS,
+    products
+})
+
+export type setActivePageActionCreator = (activePage: number) => ISetActivePage
+
+export const setActivePage: setActivePageActionCreator = pageNumber => ({
+    type: SET_ACTIVE_PAGE,
+    pageNumber
+})
+
+export type setCardOnPageActionCreator = (cardOnPage: number) => ISetCardOnPage
+
+export const setCardOnPage: setCardOnPageActionCreator = cardOnPage => ({
+    type: SET_CARD_ON_PAGE,
+    cardOnPage
+})
