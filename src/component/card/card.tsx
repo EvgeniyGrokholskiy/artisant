@@ -1,14 +1,8 @@
 import React from 'react';
 import style from './card.module.scss';
+import {ICardProps} from "../../types/types";
 import productImage from '../../assets/img/product_img.png'
 
-interface ICardProps {
-    creatorName?: string
-    header1?: string
-    header2?: string
-    quality?: number
-    price?: number
-}
 
 const Card: React.FC<ICardProps> = ({
                                         creatorName = 'Alexander Kurmanin',

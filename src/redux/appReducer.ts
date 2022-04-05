@@ -1,12 +1,13 @@
-import {IProducts} from "../types/types";
+import {IProduct} from "../types/types";
 
 const SET_PRODUCTS = "SRC/REDUX/APP_REDUCER/SET_PRODUCTS"
 const SET_ACTIVE_PAGE = "SRC/REDUX/APP_REDUCER/SET_ACTIVE_PAGE"
 const SET_CARD_ON_PAGE = "SRC/REDUX/APP_REDUCER/SET_CARD_ON_PAGE"
+const SORT_BY_AVAILABILITY = "SRC/REDUX/APP_REDUCER/SORT_BY_AVAILABILITY"
 
 interface ISetProductAction {
     type: typeof SET_PRODUCTS
-    products: IProducts
+    products: IProduct[]
 }
 
 interface ISetActivePage {
@@ -19,18 +20,25 @@ interface ISetCardOnPage {
     cardOnPage: number
 }
 
-type actionType = ISetProductAction | ISetActivePage | ISetCardOnPage
+interface ISortByAvailable {
+    type: typeof SORT_BY_AVAILABILITY
+    payload: boolean
+}
+
+type actionType = ISetProductAction | ISetActivePage | ISetCardOnPage | ISortByAvailable
 
 export interface IInitialState {
-    products: [] | IProducts
+    products: [] | IProduct[]
     activePage: number
     cardOnPage: number
+    isAvailable: boolean
 }
 
 export const initialState: IInitialState = {
     products: [],
     activePage: 1,
-    cardOnPage: 2
+    cardOnPage: 4,
+    isAvailable: false
 }
 
 type appReducerType = (state: IInitialState, action: actionType) => IInitialState
@@ -43,6 +51,10 @@ export const appReducer: appReducerType = (state: IInitialState = initialState, 
             }
         }
         case SET_ACTIVE_PAGE: {
+            const isString = isNaN(action.pageNumber)
+            if (isString) {
+                return state
+            }
             return {
                 ...state, activePage: action.pageNumber
             }
@@ -52,28 +64,40 @@ export const appReducer: appReducerType = (state: IInitialState = initialState, 
                 ...state, cardOnPage: action.cardOnPage
             }
         }
+        case SORT_BY_AVAILABILITY: {
+            return {
+                ...state, isAvailable: action.payload
+            }
+        }
         default: {
             return state
         }
     }
 }
-export type setProductActionCreator = (products: IProducts) => ISetProductAction
+export type setProductActionCreatorType = (products: IProduct[]) => ISetProductAction
 
-export const setProducts: setProductActionCreator = products => ({
+export const setProducts: setProductActionCreatorType = products => ({
     type: SET_PRODUCTS,
     products
 })
 
-export type setActivePageActionCreator = (activePage: number) => ISetActivePage
+export type setActivePageActionCreatorType = (activePage: number) => ISetActivePage
 
-export const setActivePage: setActivePageActionCreator = pageNumber => ({
+export const setActivePage: setActivePageActionCreatorType = pageNumber => ({
     type: SET_ACTIVE_PAGE,
     pageNumber
 })
 
-export type setCardOnPageActionCreator = (cardOnPage: number) => ISetCardOnPage
+export type setCardOnPageActionCreatorType = (cardOnPage: number) => ISetCardOnPage
 
-export const setCardOnPage: setCardOnPageActionCreator = cardOnPage => ({
+export const setCardOnPage: setCardOnPageActionCreatorType = cardOnPage => ({
     type: SET_CARD_ON_PAGE,
     cardOnPage
+})
+
+export type sortByAvailableActionCreatorType = (payload: boolean) => ISortByAvailable
+
+export const sortByAvailable: sortByAvailableActionCreatorType = payload => ({
+    type: SORT_BY_AVAILABILITY,
+    payload
 })

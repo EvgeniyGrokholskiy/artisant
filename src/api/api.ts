@@ -1,9 +1,7 @@
 import axios from "axios";
 
-const instance = axios.create({
-    baseURL: 'https://artisant.io/api/products',
-    headers: {'X-Custom-Header': 'foobar'}
-});
-
-export const test = () => {
+export const api = {
+    getProducts: async () => {
+        return await axios.get("https://artisant.io/api/products").then((data) => data.data.data.products)
+    }
 }

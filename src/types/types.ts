@@ -1,5 +1,11 @@
-import {create} from "domain";
+import {
+    setActivePageActionCreatorType,
+    setCardOnPageActionCreatorType,
+    setProductActionCreatorType,
+    sortByAvailable, sortByAvailableActionCreatorType
+} from "../redux/appReducer";
 
+/************App Reducer State*************************/
 export interface IPhotoNames {
     "original": string
     "compressed": string
@@ -54,3 +60,42 @@ export interface IProduct {
 export interface IProducts {
     products: Array<IProduct>
 }
+
+/**************Component Props Interface**********************/
+
+export interface ICardContainerProps {
+    products: Array<IProduct>
+    cardOnPage: number
+    activePage: number
+    setActivePage: setActivePageActionCreatorType
+}
+
+export interface ICardProps {
+    creatorName?: string
+    header1: string
+    header2: string
+    quality: number
+    price: number
+    id: number
+}
+
+export interface IAppProps {
+    products: Array<IProduct>
+    cardOnPage: number
+    activePage: number
+    isAvailable: boolean
+    setProducts: setProductActionCreatorType
+    setActivePage: setActivePageActionCreatorType
+    setCardOnPage: setCardOnPageActionCreatorType
+    sortByAvailable: sortByAvailableActionCreatorType
+}
+
+export interface IHeaderProps {
+    sortByAvailable: sortByAvailableActionCreatorType
+}
+
+/********Function Types**********/
+
+export type pagedProductArrayType = (products: Array<IProduct> | undefined, pageQuality: number, activePage: number, cardOnPage: number) => IProducts | undefined
+
+export type setQuantityCardOnPageType = () => number
