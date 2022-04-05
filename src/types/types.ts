@@ -1,3 +1,5 @@
+import {create} from "domain";
+
 export interface IPhotoNames {
     "original": string
     "compressed": string
@@ -10,7 +12,6 @@ export interface IJson_nft_data {
     "description": string
     "external_url": string
 }
-
 
 export interface IAttributes {
     "value": string
