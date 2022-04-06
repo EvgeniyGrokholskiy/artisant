@@ -1,3 +1,20 @@
+# Техническое задание:
+
+Создать мини-приложение на CRA (create-react-app + typescript) которое по api получает список товаров и выводит их на странице каталога <br/>
+
+1. Получить список товаров по запросу GET https://artisant.io/api/products <br/>
+2. Сверстать страницу каталога и вывести на нее полученные товары (https://www.figma.com/file/ionATUrBU8JrxipjmhQCjb/Untitled?node-id=0%3A1) <br/>
+3. Сделать возможность фильтрации товаров по полю «наличие» (quantity_available > 0) (любые удобным способом, например чекбоксом где-угодно) <br/>
+
+От исполнителя ожидаем аккуратную верстку. Огромным плюсом будет адаптивная верстка mobile-first.<br/>
+Изображения на товарах можно сделать статичными или взять из макета.<br/>
+Вся стилизация должна быть построена на styled-components или scss modules.<br/>
+Можно использовать redux (при необходимости, или аналоги), fetch или axios или react-query для запросов. <br/>
+
+Как результат хотим видеть ссылку на github/bitbucket/gitlab с кодом (не забывайте проверять что открыт доступ к репозиторию). Будет плюсом если захостите свой app на гитхабе и отдадите рабочую ссылку (например по этой инструкции https://github.com/gitname/react-gh-pages )<br/>
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
