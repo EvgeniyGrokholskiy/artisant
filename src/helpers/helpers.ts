@@ -1,7 +1,16 @@
-import {IProduct, IProducts, pagedProductArrayType, setQuantityCardOnPageType} from "../types/types";
+import {
+    IProduct,
+    IProducts,
+    getPageQualityType,
+    pagedProductArrayType,
+    setQuantityCardOnPageType
+} from "../types/types";
 
 
-export const pagedProductArray: pagedProductArrayType = (products: Array<IProduct> | undefined, pageQuality: number, activePage: number, cardOnPage: number) => {
+export const getPagedProductArray: pagedProductArrayType = (products: Array<IProduct> | undefined,
+                                                            pageQuality: number,
+                                                            activePage: number,
+                                                            cardOnPage: number) => {
     if (products) {
         let activePageState: IProducts = {
             products: []
@@ -24,4 +33,8 @@ export const setQuantityCardOnPage: setQuantityCardOnPageType = () => {
     } else {
         return 4
     }
+}
+
+export const getPageQuality: getPageQualityType = (productsLength: number, cardOnPage: number) => {
+    return Math.ceil(productsLength / cardOnPage)
 }

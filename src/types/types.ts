@@ -1,11 +1,13 @@
 import {
+    IInitialState,
     setActivePageActionCreatorType,
     setCardOnPageActionCreatorType,
     setProductActionCreatorType,
-    sortByAvailable, sortByAvailableActionCreatorType
-} from "../redux/appReducer";
+    sortByAvailableActionCreatorType
+} from '../redux/appReducer';
 
 /************App Reducer State*************************/
+
 export interface IPhotoNames {
     "original": string
     "compressed": string
@@ -57,8 +59,17 @@ export interface IProduct {
     "quantity_available": number
 }
 
+export interface IStore {
+    app: IInitialState,
+}
+
 export interface IProducts {
     products: Array<IProduct>
+}
+
+export interface IResolveData {
+    activePageNumber: number
+    isAvailableBoolean: boolean
 }
 
 /**************Component Props Interface**********************/
@@ -72,11 +83,11 @@ export interface ICardContainerProps {
 
 export interface ICardProps {
     creatorName?: string
-    header1: string
-    header2: string
-    quality: number
-    price: number
-    id: number
+    header1?: string
+    header2?: string
+    quality?: number
+    price?: number
+    id?: number
 }
 
 export interface IAppProps {
@@ -91,11 +102,20 @@ export interface IAppProps {
 }
 
 export interface IHeaderProps {
+    isAvailable: boolean
     sortByAvailable: sortByAvailableActionCreatorType
 }
 
-/********Function Types**********/
+/********Function Types & Object Interface**********/
 
 export type pagedProductArrayType = (products: Array<IProduct> | undefined, pageQuality: number, activePage: number, cardOnPage: number) => IProducts | undefined
 
 export type setQuantityCardOnPageType = () => number
+
+export interface IApi {
+    getProducts: () => Promise<Array<IProduct>>
+    setAppStateToLocalStorage: (activePage: number, isAvailable: boolean) => Promise<string>
+    getAppStateFromLocalStorage: () => Promise<IResolveData>
+}
+
+export type getPageQualityType = (productsLength: number, cardOnPage: number) => number

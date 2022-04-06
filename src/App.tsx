@@ -1,12 +1,11 @@
 import {api} from './api/api';
 import {connect} from 'react-redux';
-import {IStore} from './redux/store';
 import style from './app.module.scss';
 import React, {useEffect} from 'react';
 import Header from './component/header/header';
-import {IAppProps, IProduct} from './types/types';
 import {setQuantityCardOnPage} from './helpers/helpers';
 import CardContainer from './component/cardContainer/cardContainer';
+import {IAppProps, IProduct, IResolveData, IStore} from './types/types';
 import {setActivePage, setCardOnPage, setProducts, sortByAvailable} from './redux/appReducer';
 
 
@@ -21,6 +20,17 @@ const App: React.FC<IAppProps> = ({
                                       sortByAvailable
                                   }: IAppProps) => {
 
+    useEffect(() => {
+        api.getAppStateFromLocalStorage().then((stateObj: IResolveData) => {
+            const activePageNumber = stateObj.activePageNumber
+            activePageNumber && setActivePage(stateObj.activePageNumber)
+            sortByAvailable(stateObj.isAvailableBoolean)
+        })
+    }, [])
+
+    useEffect(() => {
+        api.setAppStateToLocalStorage(activePage, isAvailable).then()
+    }, [activePage, isAvailable])
 
     useEffect(() => {
         api.getProducts().then((data: Array<IProduct>) => {
@@ -50,29 +60,10 @@ const App: React.FC<IAppProps> = ({
         }
     }, [])
 
-    useEffect(() => {
-        localStorage.setItem('activePage', activePage.toString())
-        localStorage.setItem('isAvailable', isAvailable.toString())
-    }, [activePage, isAvailable])
-
-    useEffect(() => {
-        debugger
-        const activePagesString = localStorage.getItem('activePage')
-        const isAvailableString = localStorage.getItem('isAvailable')
-        const activePageNumber = activePagesString && parseFloat(activePagesString)
-        const isAvailableBoolean = isAvailableString && isAvailableString === 'true'
-
-        activePageNumber && setActivePage(activePageNumber)
-        if (typeof isAvailableBoolean === "boolean") {
-            sortByAvailable(isAvailableBoolean)
-        }
-    }, [])
-
-
     return (
         <div className={style.wrapper}>
             <header>
-                <Header sortByAvailable={sortByAvailable}/>
+                <Header sortByAvailable={sortByAvailable} isAvailable={isAvailable}/>
             </header>
             <main>
                 <CardContainer products={products} cardOnPage={cardOnPage} activePage={activePage}

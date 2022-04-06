@@ -5,11 +5,11 @@ import productImage from '../../assets/img/product_img.png'
 
 
 const Card: React.FC<ICardProps> = ({
-                                        creatorName = 'Alexander Kurmanin',
-                                        header1 = 'Digital Addiction',
-                                        header2 = 'Number Seven',
-                                        quality = 50,
-                                        price = 0.07
+                                        creatorName = 'Data is loading',
+                                        header1 = 'Data is loading',
+                                        header2 = 'Data is loading',
+                                        quality = 1,
+                                        price = 0.00
                                     }: ICardProps) => {
     return (
         <div className={style.wrapper}>
