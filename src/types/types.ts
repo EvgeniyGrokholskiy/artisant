@@ -1,4 +1,5 @@
 import {
+    getProductsType,
     IInitialState,
     setActivePageActionCreatorType,
     setCardOnPageActionCreatorType,
@@ -72,6 +73,8 @@ export interface IResolveData {
     isAvailableBoolean: boolean
 }
 
+export type IMockProductsArray = Array<{}>
+
 /**************Component Props Interface**********************/
 
 export interface ICardContainerProps {
@@ -95,10 +98,10 @@ export interface IAppProps {
     cardOnPage: number
     activePage: number
     isAvailable: boolean
-    setProducts: setProductActionCreatorType
     setActivePage: setActivePageActionCreatorType
     setCardOnPage: setCardOnPageActionCreatorType
     sortByAvailable: sortByAvailableActionCreatorType
+    getProducts: getProductsType
 }
 
 export interface IHeaderProps {
@@ -115,7 +118,7 @@ export type setQuantityCardOnPageType = () => number
 export interface IApi {
     getProducts: () => Promise<Array<IProduct>>
     setAppStateToLocalStorage: (activePage: number, isAvailable: boolean) => Promise<string>
-    getAppStateFromLocalStorage: () => Promise<IResolveData>
+    getAppStateFromLocalStorage: (setActivePage: setActivePageActionCreatorType, sortByAvailable: sortByAvailableActionCreatorType) => Promise<string>
 }
 
 export type getPageQualityType = (productsLength: number, cardOnPage: number) => number

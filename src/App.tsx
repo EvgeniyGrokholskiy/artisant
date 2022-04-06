@@ -3,10 +3,10 @@ import {connect} from 'react-redux';
 import style from './app.module.scss';
 import React, {useEffect} from 'react';
 import Header from './component/header/header';
+import {IAppProps, IStore} from './types/types';
 import {setQuantityCardOnPage} from './helpers/helpers';
 import CardContainer from './component/cardContainer/cardContainer';
-import {IAppProps, IProduct, IResolveData, IStore} from './types/types';
-import {setActivePage, setCardOnPage, setProducts, sortByAvailable} from './redux/appReducer';
+import {getProducts, setActivePage, setCardOnPage, sortByAvailable} from './redux/appReducer';
 
 
 const App: React.FC<IAppProps> = ({
@@ -14,18 +14,14 @@ const App: React.FC<IAppProps> = ({
                                       cardOnPage,
                                       activePage,
                                       isAvailable,
-                                      setProducts,
+                                      getProducts,
                                       setActivePage,
                                       setCardOnPage,
-                                      sortByAvailable
+                                      sortByAvailable,
                                   }: IAppProps) => {
 
     useEffect(() => {
-        api.getAppStateFromLocalStorage().then((stateObj: IResolveData) => {
-            const activePageNumber = stateObj.activePageNumber
-            activePageNumber && setActivePage(stateObj.activePageNumber)
-            sortByAvailable(stateObj.isAvailableBoolean)
-        })
+        api.getAppStateFromLocalStorage(setActivePage, sortByAvailable).then()
     }, [])
 
     useEffect(() => {
@@ -33,14 +29,7 @@ const App: React.FC<IAppProps> = ({
     }, [activePage, isAvailable])
 
     useEffect(() => {
-        api.getProducts().then((data: Array<IProduct>) => {
-            if (isAvailable) {
-                const newArray: IProduct[] = data.filter(item => item.quantity_available > 0)
-                setProducts(newArray)
-            } else {
-                setProducts(data)
-            }
-        })
+        getProducts(isAvailable)
     }, [isAvailable])
 
     useEffect(() => {
@@ -81,7 +70,7 @@ const mapStateTuProps = (state: IStore) => ({
 })
 
 const mapDispatchToProps = {
-    setProducts,
+    getProducts,
     setActivePage,
     setCardOnPage,
     sortByAvailable

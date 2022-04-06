@@ -1,5 +1,6 @@
 import {IApi} from "../types/types";
 import axios, {AxiosResponse} from "axios";
+import {setActivePageActionCreatorType, sortByAvailableActionCreatorType} from "../redux/appReducer";
 
 
 export const api: IApi = {
@@ -14,7 +15,7 @@ export const api: IApi = {
             resolve('success')
         })
     },
-    getAppStateFromLocalStorage: () => {
+    getAppStateFromLocalStorage: ((setActivePage: setActivePageActionCreatorType, sortByAvailable: sortByAvailableActionCreatorType) => {
         return new Promise((resolve => {
             const stateFromLocalStorage = localStorage.getItem('appState')
             const stateObj = stateFromLocalStorage && JSON.parse(stateFromLocalStorage)
@@ -22,7 +23,9 @@ export const api: IApi = {
             const isAvailableString = stateObj.isAvailable
             const activePageNumber = activePagesString && parseFloat(activePagesString)
             const isAvailableBoolean = isAvailableString && isAvailableString === true
-            resolve({activePageNumber, isAvailableBoolean})
+            activePageNumber && setActivePage(activePageNumber)
+            sortByAvailable(isAvailableBoolean)
+            resolve('success')
         }))
-    }
+    })
 }

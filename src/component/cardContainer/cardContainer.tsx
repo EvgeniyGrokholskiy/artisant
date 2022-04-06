@@ -1,10 +1,10 @@
 import React from 'react';
 import Card from '../card/card';
+import Loader from "../loader/loader";
 import style from './cardContainer.module.scss';
 import Pagination from '@mui/material/Pagination';
 import {ICardContainerProps, IProduct} from '../../types/types';
 import {getPagedProductArray, getPageQuality} from '../../helpers/helpers';
-import Loader from "../loader/loader";
 
 
 const CardContainer: React.FC<ICardContainerProps> = ({

@@ -1,3 +1,6 @@
+import {api} from "../api/api";
+import {Dispatch} from "react";
+import {AnyAction} from "redux";
 import {IProduct} from "../types/types";
 
 const SET_PRODUCTS = "SRC/REDUX/APP_REDUCER/SET_PRODUCTS"
@@ -101,3 +104,16 @@ export const sortByAvailable: sortByAvailableActionCreatorType = payload => ({
     type: SORT_BY_AVAILABILITY,
     payload
 })
+
+export type getProductsType = (isAvailable: boolean) => (dispatch: Dispatch<AnyAction>) => any
+
+export const getProducts:getProductsType = (isAvailable: boolean) => async (dispatch: Dispatch<AnyAction>) => {
+    await api.getProducts().then((data: IProduct[]) => {
+        if (isAvailable) {
+            const newArray: IProduct[] = data.filter(item => item.quantity_available > 0)
+            dispatch(setProducts(newArray))
+        } else {
+            dispatch(setProducts(data))
+        }
+    })
+}
