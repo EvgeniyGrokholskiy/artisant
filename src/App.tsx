@@ -1,15 +1,17 @@
-import {api} from './api/api';
-import {connect} from 'react-redux';
-import style from './app.module.scss';
-import React, {useEffect} from 'react';
-import Header from './component/header/header';
-import {IAppProps, IStore} from './types/types';
-import {setQuantityCardOnPage} from './helpers/helpers';
-import CardContainer from './component/cardContainer/cardContainer';
-import {getProducts, setActivePage, setCardOnPage, sortByAvailable} from './redux/appReducer';
+import {api} from './api/api'
+import {connect} from 'react-redux'
+import style from './app.module.scss'
+import React, {useEffect} from 'react'
+import Header from './component/header/header'
+import {IAppProps, IStore} from './types/types'
+import {setQuantityCardOnPage} from './helpers/helpers'
+import CardContainer from './component/cardContainer/cardContainer'
+import LostConnection from './component/lostConnection/lostConnection'
+import {getProducts, setActivePage, setCardOnPage, sortByAvailable} from './redux/appReducer'
 
 
 const App: React.FC<IAppProps> = ({
+                                      error,
                                       products,
                                       cardOnPage,
                                       activePage,
@@ -57,12 +59,14 @@ const App: React.FC<IAppProps> = ({
             <main>
                 <CardContainer products={products} cardOnPage={cardOnPage} activePage={activePage}
                                setActivePage={setActivePage}/>
+                <LostConnection error={error}/>
             </main>
         </div>
     );
 }
 
 const mapStateTuProps = (state: IStore) => ({
+    error: state.app.error,
     products: state.app.products,
     cardOnPage: state.app.cardOnPage,
     activePage: state.app.activePage,
@@ -76,4 +80,4 @@ const mapDispatchToProps = {
     sortByAvailable
 }
 
-export default connect(mapStateTuProps, mapDispatchToProps)(App);
+export default connect(mapStateTuProps, mapDispatchToProps)(App)

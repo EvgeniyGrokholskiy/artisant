@@ -4,7 +4,7 @@ import {
     getPageQualityType,
     pagedProductArrayType,
     setQuantityCardOnPageType
-} from "../types/types";
+} from '../types/types';
 
 
 export const getPagedProductArray: pagedProductArrayType = (products: Array<IProduct> | undefined,
@@ -37,4 +37,8 @@ export const setQuantityCardOnPage: setQuantityCardOnPageType = () => {
 
 export const getPageQuality: getPageQualityType = (productsLength: number, cardOnPage: number) => {
     return Math.ceil(productsLength / cardOnPage)
+}
+
+export const refreshPage = () => {
+    window.location.reload();
 }

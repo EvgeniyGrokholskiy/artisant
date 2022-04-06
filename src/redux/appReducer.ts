@@ -1,12 +1,17 @@
-import {api} from "../api/api";
-import {Dispatch} from "react";
-import {AnyAction} from "redux";
-import {IProduct} from "../types/types";
+import {api} from '../api/api';
+import {Dispatch} from 'react';
+import {AnyAction} from 'redux';
+import {IProduct} from '../types/types';
 
-const SET_PRODUCTS = "SRC/REDUX/APP_REDUCER/SET_PRODUCTS"
-const SET_ACTIVE_PAGE = "SRC/REDUX/APP_REDUCER/SET_ACTIVE_PAGE"
-const SET_CARD_ON_PAGE = "SRC/REDUX/APP_REDUCER/SET_CARD_ON_PAGE"
-const SORT_BY_AVAILABILITY = "SRC/REDUX/APP_REDUCER/SORT_BY_AVAILABILITY"
+const SET_ERROR = 'SRC/REDUX/APP_REDUCER/SET_ERROR'
+const SET_PRODUCTS = 'SRC/REDUX/APP_REDUCER/SET_PRODUCTS'
+const SET_ACTIVE_PAGE = 'SRC/REDUX/APP_REDUCER/SET_ACTIVE_PAGE'
+const SET_CARD_ON_PAGE = 'SRC/REDUX/APP_REDUCER/SET_CARD_ON_PAGE'
+const SORT_BY_AVAILABILITY = 'SRC/REDUX/APP_REDUCER/SORT_BY_AVAILABILITY'
+
+interface ISetError {
+    type: typeof SET_ERROR
+}
 
 interface ISetProductAction {
     type: typeof SET_PRODUCTS
@@ -28,26 +33,33 @@ interface ISortByAvailable {
     payload: boolean
 }
 
-type actionType = ISetProductAction | ISetActivePage | ISetCardOnPage | ISortByAvailable
+type actionType = ISetProductAction | ISetActivePage | ISetCardOnPage | ISortByAvailable | ISetError
 
 export interface IInitialState {
-    products: [] | IProduct[]
+    error: boolean
     activePage: number
     cardOnPage: number
     isAvailable: boolean
+    products: [] | IProduct[]
 }
 
 export const initialState: IInitialState = {
-    products: [],
+    error: false,
     activePage: 1,
     cardOnPage: 4,
-    isAvailable: false
+    isAvailable: false,
+    products: []
 }
 
 type appReducerType = (state: IInitialState, action: actionType) => IInitialState
 
 export const appReducer: appReducerType = (state: IInitialState = initialState, action: actionType) => {
     switch (action.type) {
+        case SET_ERROR: {
+            return {
+                ...state, error: true
+            }
+        }
         case SET_PRODUCTS: {
             return {
                 ...state, products: action.products
@@ -77,43 +89,58 @@ export const appReducer: appReducerType = (state: IInitialState = initialState, 
         }
     }
 }
-export type setProductActionCreatorType = (products: IProduct[]) => ISetProductAction
 
-export const setProducts: setProductActionCreatorType = products => ({
+export type TSetErrorActionCreator = () => ISetError
+
+export const setError: TSetErrorActionCreator = () => ({
+    type: SET_ERROR
+})
+
+export type TSetProductActionCreator = (products: IProduct[]) => ISetProductAction
+
+export const setProducts: TSetProductActionCreator = products => ({
     type: SET_PRODUCTS,
     products
 })
 
-export type setActivePageActionCreatorType = (activePage: number) => ISetActivePage
+export type TSetActivePageActionCreator = (activePage: number) => ISetActivePage
 
-export const setActivePage: setActivePageActionCreatorType = pageNumber => ({
+export const setActivePage: TSetActivePageActionCreator = pageNumber => ({
     type: SET_ACTIVE_PAGE,
     pageNumber
 })
 
-export type setCardOnPageActionCreatorType = (cardOnPage: number) => ISetCardOnPage
+export type TSetCardOnPageActionCreator = (cardOnPage: number) => ISetCardOnPage
 
-export const setCardOnPage: setCardOnPageActionCreatorType = cardOnPage => ({
+export const setCardOnPage: TSetCardOnPageActionCreator = cardOnPage => ({
     type: SET_CARD_ON_PAGE,
     cardOnPage
 })
 
-export type sortByAvailableActionCreatorType = (payload: boolean) => ISortByAvailable
+export type TSortByAvailableActionCreatorType = (payload: boolean) => ISortByAvailable
 
-export const sortByAvailable: sortByAvailableActionCreatorType = payload => ({
+export const sortByAvailable: TSortByAvailableActionCreatorType = payload => ({
     type: SORT_BY_AVAILABILITY,
     payload
 })
 
-export type getProductsType = (isAvailable: boolean) => (dispatch: Dispatch<AnyAction>) => any
+export type TGetProductsType = (isAvailable: boolean) => (dispatch: Dispatch<AnyAction>) => any
 
-export const getProducts:getProductsType = (isAvailable: boolean) => async (dispatch: Dispatch<AnyAction>) => {
-    await api.getProducts().then((data: IProduct[]) => {
-        if (isAvailable) {
-            const newArray: IProduct[] = data.filter(item => item.quantity_available > 0)
-            dispatch(setProducts(newArray))
-        } else {
-            dispatch(setProducts(data))
-        }
-    })
+export const getProducts: TGetProductsType = (isAvailable: boolean) => async (dispatch: Dispatch<AnyAction>) => {
+    try {
+        await api.getProducts().then((data: IProduct[]) => {
+            if (!data) {
+                throw new Error('error')
+            }
+            if (isAvailable) {
+                const newArray: IProduct[] = data.filter(item => item.quantity_available > 0)
+                dispatch(setProducts(newArray))
+            } else {
+                dispatch(setProducts(data))
+            }
+        })
+    } catch (e) {
+        dispatch(setError())
+    }
+
 }

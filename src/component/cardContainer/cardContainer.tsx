@@ -1,10 +1,10 @@
-import React from 'react';
-import Card from '../card/card';
-import Loader from "../loader/loader";
-import style from './cardContainer.module.scss';
-import Pagination from '@mui/material/Pagination';
-import {ICardContainerProps, IProduct} from '../../types/types';
-import {getPagedProductArray, getPageQuality} from '../../helpers/helpers';
+import React from 'react'
+import Card from '../card/card'
+import Loader from '../loader/loader'
+import style from './cardContainer.module.scss'
+import Pagination from '@mui/material/Pagination'
+import {ICardContainerProps, IProduct} from '../../types/types'
+import {getPagedProductArray, getPageQuality} from '../../helpers/helpers'
 
 
 const CardContainer: React.FC<ICardContainerProps> = ({
@@ -15,7 +15,7 @@ const CardContainer: React.FC<ICardContainerProps> = ({
                                                       }: ICardContainerProps) => {
 
 
-    const pageQuality = getPageQuality(products.length, cardOnPage)
+    const pageQuality = getPageQuality(products?.length, cardOnPage)
 
     const pageToShow = getPagedProductArray(products, pageQuality, activePage, cardOnPage)
 
@@ -38,11 +38,11 @@ const CardContainer: React.FC<ICardContainerProps> = ({
                         : <Loader/>
                 }
             </div>
-            <Pagination count={pageQuality} size="small" page={activePage} onClick={(event: React.ChangeEvent<any>) => {
+            <Pagination count={pageQuality} size='small' page={activePage} onClick={(event: React.ChangeEvent<any>) => {
                 setActivePage(Number(event.target.innerText));
             }}/>
         </div>
     );
 };
 
-export default CardContainer;
+export default CardContainer

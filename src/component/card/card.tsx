@@ -1,7 +1,7 @@
-import React from 'react';
-import style from './card.module.scss';
-import {ICardProps} from "../../types/types";
-import productImage from '../../assets/img/product_img.png'
+import React from 'react'
+import style from './card.module.scss'
+import {ICardProps} from '../../types/types'
+import productImage from '../../assets/img/product_img.webp'
 
 
 const Card: React.FC<ICardProps> = ({
@@ -24,7 +24,7 @@ const Card: React.FC<ICardProps> = ({
             </div>
             <div className={style.info_tag__available_info}>
                 <p className={style.info_tag__text}>available</p>
-                <p className={style.info_tag__quality}>{`${'1'} of ${quality}`}</p>
+                <p className={style.info_tag__quality}>{quality === 0 ? 'Out of stock' : `${'1'} of ${quality}`}</p>
             </div>
             <div className={style.info_tag__price_info}>
                 <p className={style.info_tag__text_price}>price</p>

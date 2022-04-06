@@ -14,8 +14,8 @@
   box-shadow: 0 10px 14px 0 #00000012;
   display: grid;
   grid-template-areas:
-                        "image          image"
-                        "available price_info";
+                        'image          image'
+                        'available price_info';
   position: relative;
   height: auto;
   max-width: 305px;
