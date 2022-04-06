@@ -26,7 +26,7 @@ export const getPagedProductArray: pagedProductArrayType = (products: Array<IPro
 }
 
 export const setQuantityCardOnPage: setQuantityCardOnPageType = () => {
-    if (window.innerWidth < 1299 && window.innerWidth > 978) {
+    if (window.innerWidth < 1300 && window.innerWidth > 978) {
         return 3
     } else if (window.innerWidth < 987) {
         return 2

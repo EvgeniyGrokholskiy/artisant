@@ -27,7 +27,7 @@ const CardContainer: React.FC<ICardContainerProps> = ({
                     pageToShow ?
                         pageToShow.products.map((item: IProduct) => {
                             return <Card creatorName={item?.created_by.display_name}
-                                         quality={item?.quantity_nfts_created}
+                                         quality={item?.quantity_available}
                                          price={item?.initial_price}
                                          header1={item?.name}
                                          header2={item?.json_nft_data.attributes[0].value}
