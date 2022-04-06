@@ -3,7 +3,6 @@ import {
     IInitialState,
     setActivePageActionCreatorType,
     setCardOnPageActionCreatorType,
-    setProductActionCreatorType,
     sortByAvailableActionCreatorType
 } from '../redux/appReducer';
 

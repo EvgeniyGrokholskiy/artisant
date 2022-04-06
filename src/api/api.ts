@@ -19,13 +19,15 @@ export const api: IApi = {
         return new Promise((resolve => {
             const stateFromLocalStorage = localStorage.getItem('appState')
             const stateObj = stateFromLocalStorage && JSON.parse(stateFromLocalStorage)
-            const activePagesString = stateObj.activePage
-            const isAvailableString = stateObj.isAvailable
-            const activePageNumber = activePagesString && parseFloat(activePagesString)
-            const isAvailableBoolean = isAvailableString && isAvailableString === true
-            activePageNumber && setActivePage(activePageNumber)
-            sortByAvailable(isAvailableBoolean)
-            resolve('success')
+            if(stateObj){
+                const activePagesString = stateObj.activePage
+                const isAvailableString = stateObj.isAvailable
+                const activePageNumber = activePagesString && parseFloat(activePagesString)
+                const isAvailableBoolean = isAvailableString && isAvailableString === true
+                activePageNumber && setActivePage(activePageNumber)
+                sortByAvailable(isAvailableBoolean)
+                resolve('success')
+            }
         }))
     })
 }
