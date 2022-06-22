@@ -30,16 +30,16 @@ const CardContainer: React.FC = () => {
 
                 {
                     pageToShow ?
-                        pageToShow.products.map((item: IProduct) => {
-                            return <Card creatorName={item.created_by.display_name}
-                                         quality={item.quantity_available}
-                                         price={item.initial_price}
-                                         header1={item.name}
-                                         header2={item.json_nft_data.attributes[0].value}
-                                         key={item.product_id}
-                                         id={item.product_id}
+                        pageToShow.products.map((item: IProduct) => (
+                            <Card creatorName={item.created_by.display_name}
+                                  quality={item.quantity_available}
+                                  price={item.initial_price}
+                                  header1={item.name}
+                                  header2={item.json_nft_data.attributes[0].value}
+                                  key={item.product_id}
+                                  id={item.product_id}
                             />
-                        })
+                        ))
                         : <Loader/>
                 }
             </div>

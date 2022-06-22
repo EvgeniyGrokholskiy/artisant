@@ -11,9 +11,7 @@ const Loader: React.FC = () => {
         return (
             <>
                 {
-                    mockProductsArray.map((item: {},index) => {
-                        return <Card key={index}/>
-                    })
+                    mockProductsArray.map((item: {},index) => <Card key={index}/>)
                 }
             </>
         )
