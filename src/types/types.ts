@@ -1,4 +1,4 @@
-import {IInitialState} from "../redux/appReducer"
+import {IInitialState} from '../redux/appReducer'
 
 /************App Reducer State*************************/
 

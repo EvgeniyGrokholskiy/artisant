@@ -8,7 +8,7 @@ import {IProduct} from '../../types/types'
 import style from './cardContainer.module.scss'
 import {setActivePage} from '../../redux/appReducer'
 import {getPagedProductArray, getPageQuality} from '../../helpers/helpers'
-import {getActivePage, getCardOnPage, getProductsState} from "../../redux/selectors"
+import {getActivePage, getCardOnPage, getProductsState} from '../../redux/selectors'
 
 
 const CardContainer: React.FC = () => {

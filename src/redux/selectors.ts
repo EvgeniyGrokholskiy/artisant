@@ -1,4 +1,4 @@
-import {IRootState} from "./store"
+import {IRootState} from './store'
 
 export const getError = (state: IRootState) => state.app.error
 export const getCardOnPage = (state: IRootState) => state.app.cardOnPage
