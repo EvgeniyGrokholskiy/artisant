@@ -1,11 +1,11 @@
-import {IApi} from '../types/types';
-import axios, {AxiosResponse} from 'axios';
-import {TSetActivePageActionCreator, TSortByAvailableActionCreatorType} from '../redux/appReducer';
+import axios, {AxiosResponse} from 'axios'
+
+import {IApi, ILocalStorageAppState, IProduct} from '../types/types'
 
 
 export const api: IApi = {
     getProducts: async () => {
-        return await axios.get('https://artisant.io/api/products').then((response: AxiosResponse<any>) => response.data.data.products)
+        return await axios.get<AxiosResponse<{ creators: any, products: IProduct[] }>>('https://artisant.io/api/products').then((response) => response.data.data.products)
     },
     setAppStateToLocalStorage: (activePage: number, isAvailable: boolean): Promise<string> => {
         return new Promise<string>(resolve => {
@@ -15,19 +15,11 @@ export const api: IApi = {
             resolve('success')
         })
     },
-    getAppStateFromLocalStorage: ((setActivePage: TSetActivePageActionCreator, sortByAvailable: TSortByAvailableActionCreatorType) => {
+    getAppStateFromLocalStorage: (): Promise<ILocalStorageAppState> => {
         return new Promise((resolve => {
             const stateFromLocalStorage = localStorage.getItem('appState')
             const stateObj = stateFromLocalStorage && JSON.parse(stateFromLocalStorage)
-            if (stateObj) {
-                const activePagesString = stateObj.activePage
-                const isAvailableString = stateObj.isAvailable
-                const activePageNumber = activePagesString && parseFloat(activePagesString)
-                const isAvailableBoolean = isAvailableString && isAvailableString === true
-                activePageNumber && setActivePage(activePageNumber)
-                sortByAvailable(isAvailableBoolean)
-                resolve('success')
-            }
+            resolve(stateObj)
         }))
-    })
+    }
 }

@@ -1,83 +1,72 @@
-import {api} from './api/api'
-import {connect} from 'react-redux'
-import style from './app.module.scss'
 import React, {useEffect} from 'react'
-import Header from './component/header/header'
-import {IAppProps, IStore} from './types/types'
-import {setQuantityCardOnPage} from './helpers/helpers'
-import CardContainer from './component/cardContainer/cardContainer'
-import LostConnection from './component/lostConnection/lostConnection'
+import {useDispatch, useSelector} from 'react-redux'
+
+import {api} from './api/api'
+import style from './app.module.scss'
+import Header from './components/header/header'
+import {getQuantityCardOnPage} from './helpers/helpers'
+import CardContainer from './components/cardContainer/cardContainer'
+import LostConnection from './components/lostConnection/lostConnection'
+import {getActivePage, getError, getIsAvailable} from './redux/selectors'
 import {getProducts, setActivePage, setCardOnPage, sortByAvailable} from './redux/appReducer'
 
 
-const App: React.FC<IAppProps> = ({
-                                      error,
-                                      products,
-                                      cardOnPage,
-                                      activePage,
-                                      isAvailable,
-                                      getProducts,
-                                      setActivePage,
-                                      setCardOnPage,
-                                      sortByAvailable,
-                                  }: IAppProps) => {
+const App: React.FC = () => {
+
+    const dispatch = useDispatch()
+
+    const error = useSelector(getError)
+    const activePage = useSelector(getActivePage)
+    const isAvailable = useSelector(getIsAvailable)
+
 
     useEffect(() => {
-        api.getAppStateFromLocalStorage(setActivePage, sortByAvailable).then()
-    }, [])
+            api.getAppStateFromLocalStorage().then((stateObj) => {
+                if (stateObj) {
+                    const {activePage, isAvailable} = stateObj
+                    dispatch(setActivePage(activePage))
+                    dispatch(sortByAvailable(isAvailable))
+                }
+            })
+        }, [dispatch]
+    )
 
     useEffect(() => {
         api.setAppStateToLocalStorage(activePage, isAvailable).then()
     }, [activePage, isAvailable])
 
     useEffect(() => {
-        getProducts(isAvailable)
-    }, [isAvailable])
+        dispatch(getProducts(isAvailable))
+    }, [isAvailable, dispatch])
 
     useEffect(() => {
-        window.addEventListener('resize', () => {
-            setCardOnPage(setQuantityCardOnPage())
-        })
-        window.addEventListener('load', () => {
-            setCardOnPage(setQuantityCardOnPage())
-        })
-        return () => {
-            window.removeEventListener('resize', () => {
-                setCardOnPage(setQuantityCardOnPage())
-            })
-            window.removeEventListener('load', () => {
-                setCardOnPage(setQuantityCardOnPage())
-            })
+
+        const setQuantityCardOnPage = () => {
+            const quantityCardOnPage = getQuantityCardOnPage()
+            dispatch(setCardOnPage(quantityCardOnPage))
         }
-    }, [])
+
+        window.addEventListener('resize', setQuantityCardOnPage)
+        window.addEventListener('load', setQuantityCardOnPage)
+        return () => {
+            window.removeEventListener('resize', setQuantityCardOnPage)
+            window.removeEventListener('load', setQuantityCardOnPage)
+        }
+    }, [dispatch])
 
     return (
         <div className={style.wrapper}>
             <header>
-                <Header sortByAvailable={sortByAvailable} isAvailable={isAvailable}/>
+                <Header/>
             </header>
             <main>
-                <CardContainer products={products} cardOnPage={cardOnPage} activePage={activePage}
-                               setActivePage={setActivePage}/>
-                <LostConnection error={error}/>
+                <CardContainer/>
+                {
+                    error && <LostConnection/>
+                }
             </main>
         </div>
-    );
+    )
 }
 
-const mapStateTuProps = (state: IStore) => ({
-    error: state.app.error,
-    products: state.app.products,
-    cardOnPage: state.app.cardOnPage,
-    activePage: state.app.activePage,
-    isAvailable: state.app.isAvailable
-})
-
-const mapDispatchToProps = {
-    getProducts,
-    setActivePage,
-    setCardOnPage,
-    sortByAvailable
-}
-
-export default connect(mapStateTuProps, mapDispatchToProps)(App)
+export default React.memo(App)

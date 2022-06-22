@@ -1,62 +1,56 @@
-import {
-    TGetProductsType,
-    IInitialState,
-    TSetActivePageActionCreator,
-    TSetCardOnPageActionCreator,
-    TSortByAvailableActionCreatorType
-} from '../redux/appReducer';
+import {IInitialState} from "../redux/appReducer"
 
 /************App Reducer State*************************/
 
 export interface IPhotoNames {
-    'original': string
-    'compressed': string
+    original: string
+    compressed: string
 }
 
-export interface IJson_nft_data {
-    'name': string
-    'image': string
-    'attributes': Array<IAttributes>
-    'description': string
-    'external_url': string
+export interface IJsonNftData {
+    name: string
+    image: string
+    attributes: Array<IAttributes>
+    description: string
+    external_url: string
 }
 
 export interface IAttributes {
-    'value': string
-    'trait_type': string
+    value: string
+    traitType: string
 }
 
-export interface ICreated_by {
-    'user_id': number
-    'display_name': string
-    'public_address': string
-    'custom_url': string
-    'image': IPhotoNames
+export interface ICreatedBy {
+    user_id: number
+    display_name: string
+    public_address: string
+    custom_url: string
+    image: IPhotoNames
 }
 
 export interface IProduct {
-    'product_id': number
-    'name': string
-    'description': string
-    'quantity': number
-    'initial_price': number
-    'type': string
-    'avatar': IPhotoNames
-    'other_file': {
-        'original': string
+    product_id: number
+    name: string
+    description: string
+    quantity: number
+    initial_price: number
+    type: string
+    avatar: IPhotoNames
+    other_file: {
+        original: string
     }
-    'additional_photos': Array<IPhotoNames>
-    'created_by': ICreated_by
-    'json_nft_data': IJson_nft_data
-    'json_nft_link': string
-    'tx_status': string
-    'created_at': string
-    'updated_at': string
-    'quantity_nfts_created': number
-    'on_main_page': boolean
-    'is_wearable': boolean
-    'latest_price': string
-    'quantity_available': number
+    additional_photos: Array<IPhotoNames>
+    created_by: ICreatedBy
+    json_nft_data: IJsonNftData
+    json_nft_link: string
+    tx_status: string
+    created_at: string
+    updated_at: string
+    quantity_nfts_created: number
+    on_main_page: boolean
+    is_wearable: boolean
+    latest_price: string
+    quantity_available: number
 }
 
 export interface IStore {
@@ -67,11 +61,6 @@ export interface IProducts {
     products: Array<IProduct>
 }
 
-export interface IResolveData {
-    activePageNumber: number
-    isAvailableBoolean: boolean
-}
-
 export type IMockProductsArray = Array<{}>
 
 /**************Component Props Interface**********************/
@@ -80,7 +69,6 @@ export interface ICardContainerProps {
     products: Array<IProduct>
     cardOnPage: number
     activePage: number
-    setActivePage: TSetActivePageActionCreator
 }
 
 export interface ICardProps {
@@ -92,25 +80,10 @@ export interface ICardProps {
     id?: number
 }
 
-export interface IAppProps {
-    error: boolean
-    products: Array<IProduct>
-    cardOnPage: number
+
+export interface ILocalStorageAppState {
     activePage: number
     isAvailable: boolean
-    setActivePage: TSetActivePageActionCreator
-    setCardOnPage: TSetCardOnPageActionCreator
-    sortByAvailable: TSortByAvailableActionCreatorType
-    getProducts: TGetProductsType
-}
-
-export interface IHeaderProps {
-    isAvailable: boolean
-    sortByAvailable: TSortByAvailableActionCreatorType
-}
-
-export interface ILostConnectionProps {
-    error: boolean
 }
 
 /********Function Types & Object Interface**********/
@@ -122,7 +95,7 @@ export type setQuantityCardOnPageType = () => number
 export interface IApi {
     getProducts: () => Promise<Array<IProduct>>
     setAppStateToLocalStorage: (activePage: number, isAvailable: boolean) => Promise<string>
-    getAppStateFromLocalStorage: (setActivePage: TSetActivePageActionCreator, sortByAvailable: TSortByAvailableActionCreatorType) => Promise<string>
+    getAppStateFromLocalStorage: () => Promise<ILocalStorageAppState>
 }
 
 export type getPageQualityType = (productsLength: number, cardOnPage: number) => number

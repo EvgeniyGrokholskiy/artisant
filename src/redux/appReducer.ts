@@ -124,7 +124,7 @@ export const sortByAvailable: TSortByAvailableActionCreatorType = payload => ({
     payload
 })
 
-export type TGetProductsType = (isAvailable: boolean) => (dispatch: Dispatch<AnyAction>) => any
+export type TGetProductsType = (isAvailable: boolean) => (dispatch: Dispatch<AnyAction>) => Promise<void>
 
 export const getProducts: TGetProductsType = (isAvailable: boolean) => async (dispatch: Dispatch<AnyAction>) => {
     try {
@@ -142,5 +142,4 @@ export const getProducts: TGetProductsType = (isAvailable: boolean) => async (di
     } catch (e) {
         dispatch(setError())
     }
-
 }

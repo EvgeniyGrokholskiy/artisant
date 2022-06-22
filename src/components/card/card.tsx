@@ -1,4 +1,5 @@
 import React from 'react'
+
 import style from './card.module.scss'
 import {ICardProps} from '../../types/types'
 import productImage from '../../assets/img/product_img.webp'
@@ -9,10 +10,11 @@ const Card: React.FC<ICardProps> = ({
                                         header1 = 'Data is loading',
                                         header2 = 'Data is loading',
                                         quality = 1,
-                                        price = 0.00
+                                        price = 0.00,
+                                        id
                                     }: ICardProps) => {
     return (
-        <div className={style.wrapper}>
+        <div className={style.wrapper} key={id}>
             <img className={style.product_image} src={productImage} alt='nice dress'/>
             <div className={style.upper_text_section}>
                 <p className={style.upper_text_section__text}>created by</p>
